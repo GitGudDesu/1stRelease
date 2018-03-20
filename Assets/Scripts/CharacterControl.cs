@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CharacterControl : MonoBehaviour
 {
@@ -10,11 +12,18 @@ public class CharacterControl : MonoBehaviour
     private float gravity = 12.0f;
     private Vector3 moveVector;
     private float verticalVelocity = 0.0f;
+
     //player movement restriction
     private float animationDuration = 3.0f;
     private float startTime;
     private bool isDeath = false;
     public Animator anim;
+
+    //current word text variables
+    public Text partialWordText;
+    private String grabLetter;
+    private String partialWord;
+
 
     // Use this for initialization
     void Start() {
@@ -74,21 +83,55 @@ public class CharacterControl : MonoBehaviour
 
 
     public void SetSpeed(int modifier) {
-        speed = 3.0f + modifier;
+        speed = 2.0f + modifier;
     }
 
     //when character collides with an object
     private void OnControllerColliderHit(ControllerColliderHit hit) {
 
-        if(hit.point.z > transform.position.z + 0.1f && hit.gameObject.tag == "Enemy"){
+        if (hit.point.z > transform.position.z + 0.1f && hit.gameObject.tag == "Enemy") { 
             anim.Play("DAMAGED01", -1, 0f);
             Death();
+            CoinPick.ResetVars();
         }
 
         if(hit.point.z > transform.position.z + 0.1f && hit.gameObject.tag == "Coin") {
+            //remove the coin from field of play
             Destroy(GameObject.FindGameObjectWithTag("Coin"));
+            //take the letter associated with the coin
+            grabLetter = hit.gameObject.GetComponentInChildren<TextMesh>().text.ToString();
+
+            Debug.Log("LastLetterIssued" + CoinPick.getCurrentLetter() + " CoinLetter " + grabLetter);
+            //determine if that letter was correct
+            if (grabLetter.Equals(CoinPick.getCurrentLetter()))
+            {
+                //update the partial word text and increment the letter array in CoinPick
+                CoinPick.currentLetterIndex++;
+                partialWord = partialWord + grabLetter;
+                partialWordText.text = partialWord;
+                //check if word was spelled and then reset CoinPick indexes
+                //while maintaining the word index
+                if(partialWord == CoinPick.currentWord)
+                {
+                    int oldWordIndex = CoinPick.wordArrayIndex;
+                    CoinPick.ResetVars();
+                    CoinPick.wordArrayIndex = oldWordIndex + 1;
+                    partialWord = null;
+
+                }
+                return;
+
+            }
+            //end the game if the letter was incorrect
+            if(!(grabLetter.Equals(CoinPick.getCurrentLetter())))
+            {
+                Death();
+                CoinPick.ResetVars();
+            }
+
         }
     }
+    //call death and reset CoinPick indexes
     private void Death()
     {
         isDeath = true;
