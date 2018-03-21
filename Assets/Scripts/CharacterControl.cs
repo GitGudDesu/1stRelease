@@ -8,7 +8,7 @@ public class CharacterControl : MonoBehaviour
 {
 
     private CharacterController controller;
-    private float speed = 3.0f;
+    private float speed = 3.75f;
     private float gravity = 12.0f;
     private Vector3 moveVector;
     private float verticalVelocity = 0.0f;
@@ -21,6 +21,7 @@ public class CharacterControl : MonoBehaviour
 
     //current word text variables
     public Text partialWordText;
+    public Text WrongWordText;
     private String grabLetter;
     private String partialWord;
 
@@ -83,7 +84,7 @@ public class CharacterControl : MonoBehaviour
 
 
     public void SetSpeed(int modifier) {
-        speed = 2.0f + modifier;
+        speed = 1.5f + modifier;
     }
 
     //when character collides with an object
@@ -132,7 +133,9 @@ public class CharacterControl : MonoBehaviour
 			} 
 			else 
 			{
-				Death ();
+                WrongWordText.text = ("Word spelled incorrectly: " + CoinPick.currentWord);
+
+                Death ();
 				return;
 			}
         }

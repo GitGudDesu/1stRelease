@@ -57,7 +57,7 @@ public class tilemanager : MonoBehaviour {
 
     private int RandomPrefabIndex()
     {
-		if (Score.score <= 2) {
+		if (Score.score <= 1) {
 			return 0;
 		} else {
 			if (tilePrefabs.Length <= 1)
