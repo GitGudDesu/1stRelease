@@ -48,7 +48,7 @@ public class CoinPick : MonoBehaviour {
         {
             string currentWord = reader.GetString(2);
 
-            //Debug.Log(currentWord);
+            Debug.Log(currentWord);
 
             wordList.Add(currentWord);
         }
@@ -59,53 +59,58 @@ public class CoinPick : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        TextMesh textObject = GameObject.Find("New Text").GetComponent<TextMesh>();
-        if (textObject != null)
-        { 
-                        //String Variables for Letter Updates
-            String hold = textObject.text;
-            currentWord = (string)wordList[wordArrayIndex];
+		coins = GameObject.FindGameObjectsWithTag("Coin");
+		if (currentLetterIndex == 0) {
+			wordText.text = currentWord;
+		}
 
-            letterArray = currentWord.ToCharArray();
+		//loop through all the coins and make sure they are value assigned
+		for (int i = 0; i < coins.Length; i++) 
+		{
+			//create a textObject from the first coin object instance
+			TextMesh textObject = coins[i].GetComponent<TextMesh> ();
 
-            //decide if we should change the letter on update
-            if (hold.Length == 0)
-            {
-                if (currentLetterIndex == 0)
-                { wordText.text = currentWord;
-                }
+			//check to see if we have written to coin
+			if (textObject != null && textObject.text.Length == 0) { 
+				
+				//String Variables for Letter Updates
+				String hold = textObject.text;
+				currentWord = (string)wordList [wordArrayIndex];
 
-                letter = letterArray[currentLetterIndex].ToString();
-                if (counter % 2 == 0)
-                {
-                    textObject.text = letter;
-                    lastCorrectLetter = letter;
-                    counter++;
-                }
-                else
-                {
-                    char c = chars[UnityEngine.Random.Range(0, 26)];
-                    if (((char)c).ToString() != letter)
-                    {
-                        textObject.text = ((char)c).ToString();
-                        counter++;
-                    }
-                    else
-                    {
-                        textObject.text = letter;
-                        lastCorrectLetter = letter;
-                        counter++;
-                    }
-                }
-                Debug.Log("Set " + letter + " " + currentWord);
+				//convert word to char array
+				letterArray = currentWord.ToCharArray ();
 
-            }
-        }
+				//decide if we should change the letter on update
+				if (hold.Length == 0) {
+					letter = letterArray [currentLetterIndex].ToString ();
+
+					if (counter % 2 == 0) {
+						textObject.text = letter;
+						lastCorrectLetter = letter;
+						counter++;
+					//if counter is odd then input a random letter
+					} else {
+						char c = chars [UnityEngine.Random.Range (0, 26)];
+						if (((char)c).ToString () != letter) {
+							textObject.text = ((char)c).ToString ();
+							counter++;
+						//if the random letter is the correct letter update lastCorrectLetter
+						} else {
+							textObject.text = letter;
+							lastCorrectLetter = letter;
+							counter++;
+						}
+					}
+					Debug.Log ("Set " + letter + " " + currentWord);
+
+				}
+			}
+		}
     }
 
     public static String getCurrentLetter()
     {
-        return CoinPick.lastCorrectLetter;
+		return CoinPick.letterArray [currentLetterIndex].ToString ();
     }
 
     public static void ResetVars()
