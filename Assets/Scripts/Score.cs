@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class Score : MonoBehaviour
 {
 
-    private float score = 0.0f;
+    public static float score = 0.0f;
     private int difficultyLevel = 1;
     private int maxDifficultyLevel = 2;
     private int scoreToNextLevel = 100;

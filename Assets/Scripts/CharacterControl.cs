@@ -8,7 +8,7 @@ public class CharacterControl : MonoBehaviour
 {
 
     private CharacterController controller;
-    private float speed = 2.5f;
+    private float speed = 3.0f;
     private float gravity = 12.0f;
     private Vector3 moveVector;
     private float verticalVelocity = 0.0f;
