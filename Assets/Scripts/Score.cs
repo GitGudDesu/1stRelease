@@ -25,9 +25,9 @@ public class Score : MonoBehaviour
         if(isDeath){
             return;
         }
-        if(score >= scoreToNextLevel) {
-            LevelUp();
-        }
+//        if(score >= scoreToNextLevel) {
+//            LevelUp();
+//        }
         score += Time.deltaTime;
         scoreText.text = ((int)score).ToString();
     }
