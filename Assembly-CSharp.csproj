@@ -57,8 +57,10 @@
      <Compile Include="Assets\Scripts\CoinPick.cs" />
      <Compile Include="Assets\Scripts\DeathMenu.cs" />
      <Compile Include="Assets\Scripts\MainMenu.cs" />
+     <Compile Include="Assets\Scripts\MenuLogin.cs" />
      <Compile Include="Assets\Scripts\QuitButton.cs" />
      <Compile Include="Assets\Scripts\Score.cs" />
+     <Compile Include="Assets\Scripts\SubmitName.cs" />
      <Compile Include="Assets\Scripts\tilemanager.cs" />
      <Compile Include="Assets\UnityChan\Scripts\CameraController.cs" />
      <Compile Include="Assets\UnityChan\Scripts\FaceUpdate.cs" />
